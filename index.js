@@ -2,7 +2,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
 import multer from "multer";
-import { createReadStream } from "fs";
 import {
 	ImageClassification,
 	OpticalCharacterRecognition
@@ -42,14 +41,51 @@ app.get("/", async (req, res) => {
 	// const startInterval = 18917;
 	// const endInterval = 18919;
 
-	// console.log(await ocr.getModelDetails());
-	// console.log(await ocr.getAllPredictedFileData(startInterval, endInterval));
-	// console.log(await ocr.getPredictedFileDataById(process.env.FILE_ID));
-	// console.log(await ocr.predictUsingUrls(ocrUrlArray));
-	// console.log(await ocr.predictUsingUrlsAsync(urlArray));
+	// Optical Character Recognition (OCR) functions
+	// Uncomment specific functions to get an output in the server console.
+	/*
+		Don't forget to
+	 	- Add API Keys, Model IDs and other required data to a `.env` file in the root directory.
+		- Uncomment the required Object invocations
+	*/
 
-	// console.log(await ic.getModelDetails());
-	// console.log(await ic.predictUsingUrls(icUrlArray));
+	// console.log(
+	// 	await ocr.getModelDetails(),
+	// 	"\n-------------------------------------------------------\n"
+	// );
+	// console.log(
+	// 	await ocr.getAllPredictedFileData(startInterval, endInterval),
+	// 	"\n-------------------------------------------------------\n"
+	// );
+	// console.log(
+	// 	await ocr.getPredictedFileDataById(process.env.FILE_ID),
+	// 	"\n-------------------------------------------------------\n"
+	// );
+	// console.log(
+	// 	await ocr.predictUsingUrls(ocrUrlArray),
+	// 	"\n-------------------------------------------------------\n"
+	// );
+	// console.log(
+	// 	await ocr.predictUsingUrlsAsync(urlArray),
+	// 	"\n-------------------------------------------------------\n"
+	// );
+
+	// Image Classification (IC) functions
+	// Uncomment specific functions to get an output in the server console.
+	/*
+		Don't forget to
+	 	- Add API Keys, Model IDs and other required data to a `.env` file in the root directory.
+		- Uncomment the required Object invocations
+	*/
+
+	// console.log(
+	// 	await ic.getModelDetails(),
+	// 	"\n-------------------------------------------------------\n"
+	// );
+	// console.log(
+	// 	await ic.predictUsingUrls(icUrlArray),
+	// 	"\n-------------------------------------------------------\n"
+	// );
 
 	res.sendFile(__dirname + "/public/index.html");
 });
@@ -59,16 +95,25 @@ app.get("/uploadFile", (req, res) => {
 });
 
 app.post("/uploadFile", upload.single("file"), async (req, res) => {
-	const file = createReadStream(req.file.path);
+	console.log("Uploaded file details: ", req.file, "\n\nResponse:");
 
 	if (req.body.operation === "ocr")
-		console.log(await ocr.predictUsingFile(file));
+		console.log(
+			await ocr.predictUsingFile(req.file.path),
+			"\n-------------------------------------------------------\n"
+		);
 	else if (req.body.operation === "ocr-async")
-		console.log(await ocr.predictUsingFileAsync(file));
+		console.log(
+			await ocr.predictUsingFileAsync(req.file.path),
+			"\n-------------------------------------------------------\n"
+		);
 	else if (req.body.operation === "ic")
-		console.log(await ic.predictUsingFile(file));
+		console.log(
+			await ic.predictUsingFile(req.file.path),
+			"\n-------------------------------------------------------\n"
+		);
 
-	res.send("Uploaded. Check server console for response.");
+	res.send("Uploaded. Check the server console for the response.");
 });
 
 // Server port
