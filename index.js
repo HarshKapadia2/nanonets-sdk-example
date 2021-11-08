@@ -8,7 +8,7 @@ import {
 } from "./nanonets/index.js";
 import dotenv from "dotenv";
 
-// Initialization
+// Server initialization
 const app = express();
 const upload = multer({ dest: "public/uploads" });
 dotenv.config();
@@ -24,15 +24,15 @@ app.use("/public", express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Object invocations
-const ocr = new OpticalCharacterRecognition(
-	process.env.API_KEY_1,
-	process.env.MODEL_ID_1
-);
-const ic = new ImageClassification(
-	process.env.API_KEY_1,
-	process.env.MODEL_ID_2
-);
+// Class instantiations
+// const ocr = new OpticalCharacterRecognition(
+// 	process.env.API_KEY_1,
+// 	process.env.MODEL_ID_1
+// );
+// const ic = new ImageClassification(
+// 	process.env.API_KEY_1,
+// 	process.env.MODEL_ID_2
+// );
 
 // Routes
 app.get("/", async (req, res) => {
@@ -42,15 +42,9 @@ app.get("/", async (req, res) => {
 	// const endInterval = 18919;
 
 	// Optical Character Recognition (OCR) functions
-	// Uncomment specific functions to get an output in the server console.
-	/*
-		Don't forget to
-	 	- Add API Keys, Model IDs and other required data to a `.env` file in the root directory.
-		- Uncomment the required Object invocations
-	*/
 
 	// console.log(
-	// 	await ocr.getModelDetails(),
+	// await ocr.getModelDetails(),
 	// 	"\n-------------------------------------------------------\n"
 	// );
 	// console.log(
@@ -58,25 +52,19 @@ app.get("/", async (req, res) => {
 	// 	"\n-------------------------------------------------------\n"
 	// );
 	// console.log(
-	// 	await ocr.getPredictedFileDataById(process.env.FILE_ID),
+	// 	await ocr.getPredictedFileData(process.env.FILE_ID),
 	// 	"\n-------------------------------------------------------\n"
 	// );
 	// console.log(
-	// 	await ocr.predictUsingUrls(ocrUrlArray),
+	// 	await ocr.predictUsingUrls(ocrUrlArray, false),
 	// 	"\n-------------------------------------------------------\n"
 	// );
 	// console.log(
-	// 	await ocr.predictUsingUrlsAsync(urlArray),
+	// 	await ocr.predictUsingUrls(ocrUrlArray, true),
 	// 	"\n-------------------------------------------------------\n"
 	// );
 
 	// Image Classification (IC) functions
-	// Uncomment specific functions to get an output in the server console.
-	/*
-		Don't forget to
-	 	- Add API Keys, Model IDs and other required data to a `.env` file in the root directory.
-		- Uncomment the required Object invocations
-	*/
 
 	// console.log(
 	// 	await ic.getModelDetails(),
@@ -99,12 +87,12 @@ app.post("/uploadFile", upload.single("file"), async (req, res) => {
 
 	if (req.body.operation === "ocr")
 		console.log(
-			await ocr.predictUsingFile(req.file.path),
+			await ocr.predictUsingFile(req.file.path, false),
 			"\n-------------------------------------------------------\n"
 		);
 	else if (req.body.operation === "ocr-async")
 		console.log(
-			await ocr.predictUsingFileAsync(req.file.path),
+			await ocr.predictUsingFile(req.file.path, true),
 			"\n-------------------------------------------------------\n"
 		);
 	else if (req.body.operation === "ic")
